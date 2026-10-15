@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Mi perfil{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <h1>Mi perfil</h1>
+  <form method="post">
+    <label>Nombre</label><input name="nombre" value="{{u['nombre']}}" required>
+    <label>Apellido</label><input name="apellido" value="{{u['apellido']}}" required>
+    <label>Correo</label><input value="{{u['correo']}}" disabled>
+    <label>Ciudad</label><input name="ciudad" value="{{u['ciudad']}}">
+    <label>Nivel educativo</label><input name="nivel" value="{{u['nivel']}}">
+
+    {% if t %}
+      <h3>Información del tutor</h3>
+      <label>Materias que enseñas</label>
+      <div class="subject-list">
+        {% for materia in materias %}
+          <label class="check-option">
+            <input type="checkbox" name="materias" value="{{ materia['id'] }}" {% if materia['id'] in materias_tutor %}checked{% endif %}>
+            <span>{{ materia['nombre'] }}</span>
+          </label>
+        {% endfor %}
+      </div>
+      <small>Selecciona al menos una materia.</small>
+
+      <label>Experiencia</label><input name="experiencia" value="{{t['experiencia']}}">
+      <label>Precio por hora</label><input type="number" name="precio_hora" value="{{t['precio_hora']}}">
+      <label>Modalidad</label>
+      <select name="modalidad">
+        <option {% if t['modalidad']=='Virtual' %}selected{% endif %}>Virtual</option>
+        <option {% if t['modalidad']=='Presencial' %}selected{% endif %}>Presencial</option>
+        <option {% if ' / ' in t['modalidad'] %}selected{% endif %}>Virtual / Presencial</option>
+      </select>
+      <label>Descripción</label><textarea name="descripcion">{{t['descripcion']}}</textarea>
+    {% endif %}
+
+    <button class="btn primary full">Guardar cambios</button>
+  </form>
+</div>
+{% endblock %}

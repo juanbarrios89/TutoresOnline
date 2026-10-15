@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <p class="eyebrow">CREAR CUENTA</p>
+  <h1>Únete a TutoresOn-Line</h1>
+  <form method="post">
+    <div class="grid two">
+      <div><label>Nombre</label><input name="nombre" required></div>
+      <div><label>Apellido</label><input name="apellido" required></div>
+    </div>
+    <label>Correo</label><input type="email" name="correo" required>
+    <label>Contraseña</label><input type="password" name="password" minlength="6" required>
+    <label>Tipo de usuario</label>
+    <select name="rol" id="rol" required>
+      <option value="">Seleccionar</option>
+      <option value="estudiante">🎓 Estudiante</option>
+      <option value="tutor">👨‍🏫 Tutor</option>
+    </select>
+    <label>Ciudad</label><input name="ciudad" placeholder="Ej. Barranquilla">
+    <label>Nivel educativo</label><input name="nivel" placeholder="Ej. Universidad">
+
+    <div id="tutorFields" class="tutor-fields" hidden>
+      <h3>Información del tutor</h3>
+      <label>Materias que enseñas</label>
+      <div class="subject-list">
+        {% for materia in materias %}
+          <label class="check-option">
+            <input type="checkbox" name="materias" value="{{ materia['id'] }}">
+            <span>{{ materia['nombre'] }}</span>
+          </label>
+        {% endfor %}
+      </div>
+      <small>Selecciona al menos una materia.</small>
+
+      <label>Experiencia</label><input name="experiencia" placeholder="Ej. 3 años de experiencia">
+      <label>Precio por hora</label><input type="number" name="precio_hora" min="0" placeholder="Ej. 30000">
+      <label>Modalidad</label>
+      <select name="modalidad">
+        <option>Virtual</option>
+        <option>Presencial</option>
+        <option>Virtual / Presencial</option>
+      </select>
+      <label>Descripción</label><textarea name="descripcion" placeholder="Cuéntanos brevemente sobre tu experiencia como tutor."></textarea>
+    </div>
+
+    <button class="btn primary full">Crear cuenta</button>
+  </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  const rol = document.getElementById('rol');
+  const tutorFields = document.getElementById('tutorFields');
+  function actualizarRegistro() {
+    tutorFields.hidden = rol.value !== 'tutor';
+  }
+  rol.addEventListener('change', actualizarRegistro);
+  actualizarRegistro();
+</script>
+{% endblock %}
